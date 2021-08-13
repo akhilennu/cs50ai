@@ -62,20 +62,14 @@ def winner(board):
     """
     Returns the winner of the game, if there is one.
     """
-    v = utility(board)
-    if(v==1):
-        return X
-    elif(v==-1):
-        return O
-    else:
-        return None
+    raise NotImplementedError
 
 
 def terminal(board):
     """
     Returns True if game is over, False otherwise.
     """
-    return utility(board) != 0
+    raise NotImplementedError
 
 
 def utility(board):
