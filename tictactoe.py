@@ -22,35 +22,60 @@ def player(board):
     """
     Returns player who has the next turn on a board.
     """
-    raise NotImplementedError
+    x_count = 0
+    o_count = 0
+    for row in board:
+        for col in row:
+            if(col == X):
+                x_count += 1
+            elif(col == O):
+                o_count += 1
+    current_turn = X
+    if(x_count>o_count):
+        current_turn = O
+    return current_turn
 
 
 def actions(board):
     """
     Returns set of all possible actions (i, j) available on the board.
     """
-    raise NotImplementedError
+    actions = []
+    for i in range(3):
+        for j in range(3):
+            if(board[i][j]==EMPTY):
+                actions.append((i,j))
+    return actions
 
 
 def result(board, action):
     """
     Returns the board that results from making move (i, j) on the board.
     """
-    raise NotImplementedError
+    board_copy = board[:]
+    i,j = action
+    board_copy[i][j] = player(board)
+    return board_copy
 
 
 def winner(board):
     """
     Returns the winner of the game, if there is one.
     """
-    raise NotImplementedError
+    v = utility(board)
+    if(v==1):
+        return X
+    elif(v==-1):
+        return O
+    else:
+        return None
 
 
 def terminal(board):
     """
     Returns True if game is over, False otherwise.
     """
-    raise NotImplementedError
+    return utility(board) != 0
 
 
 def utility(board):
