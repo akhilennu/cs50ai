@@ -62,26 +62,29 @@ def main():
     load_data(directory)
     print("Data loaded.")
 
-    source = person_id_for_name(input("Name: "))
-    if source is None:
-        sys.exit("Person not found.")
-    target = person_id_for_name(input("Name: "))
-    if target is None:
-        sys.exit("Person not found.")
+    cont = 'Y'
+    while(cont != 'N'):
+        source = person_id_for_name(input("Name: "))
+        if source is None:
+            sys.exit("Person not found.")
+        target = person_id_for_name(input("Name: "))
+        if target is None:
+            sys.exit("Person not found.")
 
-    path = shortest_path(source, target)
+        path = shortest_path(source, target)
 
-    if path is None:
-        print("Not connected.")
-    else:
-        degrees = len(path)
-        print(f"{degrees} degrees of separation.")
-        path = [(None, source)] + path
-        for i in range(degrees):
-            person1 = people[path[i][1]]["name"]
-            person2 = people[path[i + 1][1]]["name"]
-            movie = movies[path[i + 1][0]]["title"]
-            print(f"{i + 1}: {person1} and {person2} starred in {movie}")
+        if path is None:
+            print("Not connected.")
+        else:
+            degrees = len(path)
+            print(f"{degrees} degrees of separation.")
+            path = [(None, source)] + path
+            for i in range(degrees):
+                person1 = people[path[i][1]]["name"]
+                person2 = people[path[i + 1][1]]["name"]
+                movie = movies[path[i + 1][0]]["title"]
+                print(f"{i + 1}: {person1} and {person2} starred in {movie}")
+        cont = input("Continue (Y/N): ")
 
 
 def shortest_path(source, target):
@@ -92,8 +95,37 @@ def shortest_path(source, target):
     If no possible path, returns None.
     """
 
-    # TODO
-    raise NotImplementedError
+    start = Node(state=source, parent=None, action=None)
+    frontier = QueueFrontier()
+    frontier.add(start)
+    explored = set()
+    while True:
+        # If nothing left in frontier, then no path
+        if frontier.empty():
+            return None
+        # Choose a node from the frontier
+        node = frontier.remove()
+
+        # if node.state == target:
+        #     sol = []
+        #     while node.parent is not None:
+        #         sol.append((node.action, node.state))
+        #         node = node.parent
+        #     sol.reverse()
+        #     return sol
+
+        explored.add(node.state)
+        for action, state in neighbors_for_person(node.state):
+            if not frontier.contains_state(state) and state not in explored:
+                child = Node(state=state, parent=node, action=action)
+                if state == target:
+                    sol = []
+                    while child.parent is not None:
+                        sol.append((child.action, child.state))
+                        child = child.parent
+                    sol.reverse()
+                    return sol
+                frontier.add(child)
 
 
 def person_id_for_name(name):
