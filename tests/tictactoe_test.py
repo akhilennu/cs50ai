@@ -22,6 +22,11 @@ class TestTicTacToe(unittest.TestCase):
         self.assertEqual(t.minimax([['O', 'X', 'O'], ['X', 'X', 'O'], ['X', 'O', t.EMPTY]]),(2,2))
         self.assertEqual(t.minimax([['O', 'X', 'O'], ['X', 'X', 'O'], ['X', t.EMPTY, t.EMPTY]]),(2,2))
         self.assertEqual(t.minimax([['O', 'O', 'X'], ['X', 'O', 'X'], [t.EMPTY, 'X', t.EMPTY]]),(2,2))
+        self.assertEqual(t.minimax([
+            [t.X, t.EMPTY, t.EMPTY],
+            [t.EMPTY, t.O, t.EMPTY],
+            [t.EMPTY, t.EMPTY, t.EMPTY],
+        ]),(0,1))
 
 if __name__ == '__main__':
     unittest.main()
